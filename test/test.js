@@ -3,8 +3,8 @@ const chai = require('chai');
 const server = require('supertest');
 const app = express();
 var should = require("should");
-// var server = server.agent("http://localhost:8443");
-var server = server(app)
+//  server = server.agent("http://localhost:8443");
+server = server(app)
 describe('Get Next Page URL', () => {
     it('should get next url', (done) => {
         server
