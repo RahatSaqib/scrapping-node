@@ -12,7 +12,6 @@ const app = express();
 const PORT = 8443;
 let items = [];
 
-
 //Api for get next page url
 app.get("/next-url", function (req, res) {
   getNextPageUrl().then((pages) => {
@@ -54,68 +53,110 @@ app.get("/total-ads", function (req, res) {
 
 //Api for scrap-truck-item
 app.get("/scrape-truck-item", function (req, res) {
+  getNextPageUrl().then((pages) => {
+    let truckItems = [];
+    let uniqueItems = [];
+    Promise.all(
+      pages.map((page) => {
+        return new Promise((resolve, reject) => {
+          // console.log(baseUrl + page.url);
+          scrapeTruckItem(baseUrl + page.url).then((data) => {
+            console.log(data.length);
+            Promise.all(
+              data.map((truckItem) => {
+                return new Promise((res, rejt) => {
+                  // fetchTruckData(truckItem.url).then((item) => {
+                  if (!uniqueItems.includes(truckItem.id)) {
+                    truckItems.push(truckItem);
+                    uniqueItems.push(truckItem.id);
+                  }
 
-  getNextPageUrl().then((pages)=>{
-    let truckItems = []
+                  // truckItems.push({ ...truckItem, ...item });
+                  // let concatedItem = { ...truckItem, ...item };
+                  res(truckItem);
 
-    Promise.all(pages.map(async(page)=>{
-      return new Promise((resolve ,reject)=>{
-        console.log(baseUrl + page.url)
-        scrapeTruckItem(baseUrl + page.url).then((data) => {
-          // console.log(data)
-          Promise.all(data.map(async(truckItem)=>{
-            return new Promise ((res , rejt)=>{
-              fetchTruckData(truckItem.url).then((item) => {
-                truckItems.push({ ...truckItem, ...item });
-                let concatedItem = { ...truckItem, ...item };
-                res(concatedItem)
-      
-              });
-            })
-          })).then((items)=>{
-            resolve()
-      
-          })
+                  // });
+                });
+              })
+            ).then((items) => {
+              resolve(items);
+            });
+          });
         });
       })
-    })).then((items)=>{
-      res.status(200).send(truckItems);
-    })
-  })
+    ).then((items) => {
+      let modifiedTruckItems = [];
+      let uniqueItems = [];
+      Promise.all(
+        truckItems.map((truckItem) => {
+          return new Promise((resolve, reject) => {
+            fetchTruckData(truckItem.url).then((item) => {
+              if (!uniqueItems.includes(truckItem.id)) {
+                  modifiedTruckItems.push({ ...truckItem, ...item });
+                  uniqueItems.push(truckItem.id);
+              }
 
+              let concatedItem = { ...truckItem, ...item };
+              resolve(concatedItem);
+            });
+          });
+        })
+      ).then(() => {
+        console.log(modifiedTruckItems.length);
+        res.status(200).send(modifiedTruckItems);
+      });
+    });
+  });
 });
 
 async function fetchTruckData(url) {
   return new Promise(async (resolve, reject) => {
-    const truckData = await axios({
-      method: "GET",
-      url: url,
-    });
-    const truck$ = cheerio.load(truckData.data);
-    // console.log(truck$.html())
-    let registration_date = truck$(
-      "#parameters > ul:nth-child(2) > li:nth-child(3)"
-    ); //get all element with name article
-    let production_date = truck$(
-      "#parameters > ul:nth-child(1) > li:nth-child(5)"
-    ); //get all element with name article
-    let power = truck$("#parameters > ul:nth-child(1) > li:nth-child(8)"); //get all element with name article
-    let text = registration_date.find("span").text();
-    let truckItems = {
-      registration_date: "",
-      // mileage :'',
-      power: "",
-      production_date,
-    };
-    registration_date = registration_date.text().replace(/[^\d/]/g, "");
-    power = power.text().replace(/[^\d]/g, "") + "hp";
-    production_date = production_date.text().replace(/[^\d/]/g, "");
-    truckItems.power = power;
-    truckItems.production_date = production_date;
-    if (text == "Pierwsza rejestracja" || text == "First Registration") {
-      truckItems.registration_date = registration_date;
-    }
-    resolve(truckItems);
+    await axios
+      .get(url)
+      .then((response) => {
+        const truck$ = cheerio.load(response.data);
+        // console.log(truck$.html())
+        let registration_date = truck$(
+          "#parameters > ul:nth-child(2) > li:nth-child(3)"
+        ); //get all element with name article
+        // let production_date = truck$(
+        //   "#parameters > ul:nth-child(1) > li:nth-child(5)"
+        // ); //get all element with name article
+        let power = truck$("#parameters > ul:nth-child(1) > li:nth-child(8)"); //get all element with name article
+        let text = registration_date.find("span").text();
+        let truckItems = {
+          registration_date: "",
+          // mileage :'',
+          power: "",
+          // production_date:'',
+        };
+        registration_date = registration_date.text().replace(/[^\d/]/g, "");
+        power = power.text().replace(/[^\d]/g, "") + "hp";
+        // production_date = production_date.text().replace(/[^\d/]/g, "");
+        truckItems.power = power;
+        // truckItems.production_date = production_date;
+        if (text == "Pierwsza rejestracja" || text == "First Registration") {
+          truckItems.registration_date = registration_date;
+        }
+        resolve(truckItems);
+      })
+      .catch((error) => {
+        // reject()
+        console.log("Not good man :(");
+        resolve({
+        registration_date: "",
+        // mileage :'',
+        power: "",
+        })
+      });
+    // const truckData = await axios({
+    //   method: "GET",
+    //   url: url,
+    // });
+    // if (!truckData.data) {
+    //   reject();
+    // }
+
   });
 }
 async function scrapeTruckItem(pageUrl) {
@@ -130,31 +171,32 @@ async function scrapeTruckItem(pageUrl) {
       const elementSelector = $(".ooa-p2z5vl article"); //get all element with name article
 
       elementSelector.each(async (parentIdx, parentElem) => {
-
-          let truckItem = {
-            id: "",
-            title: "",
-            price: "",
-            registration_date: "",
-            mileage: "",
-            power: "",
-          };
-          truckItem.id = $(parentElem).attr("id");
-          truckItem.title = $(parentElem).find("h2").text();
-          truckItem.url = $(parentElem).find("h2").find("a").attr("href");
-          truckItem.price = $(parentElem).find("div.e1b25f6f9").text();
-          $(parentElem)
-            .find("ul li:nth-child(2)")
-            .each((idx, elem) => {
-              truckItem.mileage = $(elem).text();
-            });
-
-          items.push(truckItem)
-
-        });
-        resolve(items)
-
-      })
+        let truckItem = {
+          id: "",
+          title: "",
+          price: "",
+          registration_date: "",
+          mileage: "",
+          power: "",
+        };
+        truckItem.id = $(parentElem).attr("id");
+        truckItem.title = $(parentElem).find("h2").text();
+        truckItem.url = $(parentElem).find("h2").find("a").attr("href");
+        truckItem.price = $(parentElem).find("div.e1b25f6f9").text();
+        $(parentElem)
+          .find("ul li:nth-child(2)")
+          .each((idx, elem) => {
+            truckItem.mileage = $(elem).text();
+          });
+        $(parentElem)
+          .find("ul li:nth-child(1)")
+          .each((idx, elem) => {
+            truckItem.production_date = $(elem).text();
+          });
+        items.push(truckItem);
+      });
+      resolve(items);
+    });
   } catch (err) {
     console.error("err");
   }
@@ -243,7 +285,7 @@ async function getNextPageUrl() {
         pages.push(pageItem);
         idx++;
       }
-      console.log(pages);
+      // console.log(pages);
       resolve(pages);
     });
   } catch (err) {
