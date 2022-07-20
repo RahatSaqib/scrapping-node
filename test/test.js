@@ -1,6 +1,6 @@
 const express = require('express');
 const chai = require('chai');
-const server = require('supertest');
+var server = require('supertest');
 const app = express();
 var should = require("should");
 //  server = server.agent("http://localhost:8443");
