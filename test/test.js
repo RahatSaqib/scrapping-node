@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const request = require('supertest');
 const app =  require( "../app");
 var should = require("should");
-//  server = server.agent("http://localhost:8443");
 describe('Get Next Page URL', () => {
     it('should get next url', (done) => {
         request(app).get("/next-url")
@@ -11,7 +10,6 @@ describe('Get Next Page URL', () => {
         .expect(200) // THis is HTTP response
         .end(function(err,res){
           // HTTP status should be 200
-          // console.log(res)
           res.status.should.equal(200);
         //   // Error key should be false.
           res.error.should.equal(false);

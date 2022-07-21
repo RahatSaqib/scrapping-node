@@ -1,6 +1,4 @@
-
-
-const axios = require('axios');
+const axios = require("axios");
 const cheerio = require("cheerio");
 const fs = require("fs");
 module.exports = class ClassScrapeTruckItem {
@@ -8,14 +6,13 @@ module.exports = class ClassScrapeTruckItem {
     this.path = "scrape-truck-item";
     this.truckItems = {
       registration_date: "",
-      mileage :'',
-      price:'',
+      mileage: "",
+      price: "",
       power: "",
-      production_date:'',
+      production_date: "",
     };
-
   }
-  async fetchTruckData(url){
+  async fetchTruckData(url) {
     return new Promise(async (resolve, reject) => {
       await axios
         .get(url)
@@ -25,9 +22,8 @@ module.exports = class ClassScrapeTruckItem {
           let registration_date = truck$(
             "#parameters > ul:nth-child(2) > li:nth-child(3)"
           ); //get all element with name article
-          let production_date = truck$(
-            "offer-main-params >span:nth-child(1)"); //get all element with name article
-          let price = truck$('.price-wrapper').attr('data-price')
+          let production_date = truck$("offer-main-params > span:nth-child(1)"); //get all element with name article
+          let price = truck$(".price-wrapper").attr("data-price");
           let power = truck$("#parameters > ul:nth-child(1) > li:nth-child(8)"); //get all element with name article
           let text = registration_date.find("span").text();
           this.truckItems.price = price;
@@ -39,32 +35,22 @@ module.exports = class ClassScrapeTruckItem {
           if (text == "Pierwsza rejestracja" || text == "First Registration") {
             this.truckItems.registration_date = registration_date;
           }
-          
+
           resolve(this.truckItems);
         })
         .catch((error) => {
-          // reject()
-          // console.log("404 NOT FOUND");
           resolve({
             registration_date: "",
-            mileage :'',
+            mileage: "",
             power: "",
-            price:'',
-            production_date:'',
-            url:"404 NOT FOUND"
+            price: "",
+            production_date: "",
+            url: "404 NOT FOUND",
           });
         });
-      // const truckData = await axios({
-      //   method: "GET",
-      //   url: url,
-      // });
-      // if (!truckData.data) {
-      //   reject();
-      // }
     });
   }
-  handle(e){
+  handle(e) {
     return this.fetchTruckData(e);
   }
-
 };

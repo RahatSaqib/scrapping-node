@@ -1,7 +1,7 @@
 const axios = require('axios');
 const cheerio = require("cheerio");
 const fs = require("fs");
-const additionalUrl =process.env.ADDITIONAL_URL;
+// const additionalUrl =process.env.ADDITIONAL_URL;
 module.exports = class ClassGetNextPageUrl {
   constructor(...args) {
     this.path = "next-url";
@@ -18,31 +18,24 @@ module.exports = class ClassGetNextPageUrl {
         const $ = cheerio.load(data);
         const elementSelector = $("li.pagination-item"); //get all element with class pagination-item
         let pageCounter = 0;
-        let lastChar = "";
+        let totalPages = "";
         elementSelector.each((parentIndex, parentElement) => {
           // console.log($(parentElement).attr("data-testid"));
   
           //check statement if the attribute(data-testid) value is "pagination-list-item"
           if ($(parentElement).attr("data-testid") === "pagination-list-item") {
-            let str = $(parentElement).find("a").attr("href");
-  
-            // get the last character for pages
-            lastChar = str.charAt(str.length - 1);
-  
-            // STATEMENT FOR PAGES GREATER THAN 9 AND LESS THAN 100
-            if (lastChar == "0") {
-              lastChar = str.charAt(str.length - 2);
-            }
-            pageCounter = parseInt(lastChar);
+            // let str = $(parentElement).find("a").attr("href");
+            totalPages = $(parentElement).find("a").text();
           }
         });
+        pageCounter = parseInt(totalPages);
         let pages = [];
         var idx = 2;
-        pages.push({ url: additionalUrl });
+        pages.push({ url: url });
         while (idx <= pageCounter) {
           //Adding value for iterate over pages
           let pageItem = {
-            url: additionalUrl + "&page=" + idx,
+            url: url + "&page=" + idx,
           };
           pages.push(pageItem);
           idx++;

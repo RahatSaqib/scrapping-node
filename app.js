@@ -8,12 +8,11 @@ require("dotenv").config();
 const baseUrl = process.env.BASE_URL;
 const additionalUrl = process.env.ADDITIONAL_URL;
 const url = baseUrl + additionalUrl;
-// const  {getNextPageUrl , scrapeTruckItem , addItems , getTotalAdsCount} = require('./functions/functions')
 
-const ClassAddItems = require("./functions/add-items");
-const ClassGetNextPageUrl = require("./functions/get-next-page-url");
-const ClassGetTotalAdsCount = require("./functions/get-total-ads-count");
-const ClassScrapeTruckItem = require("./functions/scrape-truck-item");
+const ClassAddItems = require("./classes/add-items");
+const ClassGetNextPageUrl = require("./classes/get-next-page-url");
+const ClassGetTotalAdsCount = require("./classes/get-total-ads-count");
+const ClassScrapeTruckItem = require("./classes/scrape-truck-item");
 const addItems = new ClassAddItems();
 const getNextPageUrl = new ClassGetNextPageUrl();
 const getTotalAdsCount = new ClassGetTotalAdsCount();
@@ -65,20 +64,14 @@ app.get("/scrape-truck-item", function (req, res) {
     Promise.all(
       pages.map((page) => {
         return new Promise((resolve, reject) => {
-          // console.log(baseUrl + page.url);
-          addItems.handle(baseUrl + page.url).then((data) => {
-            // console.log(data.length);
+          addItems.handle(page.url).then((data) => {
             Promise.all(
               data.map((truckItem) => {
                 return new Promise((res, rejt) => {
-                  // fetchTruckData(truckItem.url).then((item) => {
                   if (!uniqueItems.includes(truckItem.id)) {
                     truckItems.push(truckItem);
                     uniqueItems.push(truckItem.id);
                   }
-
-                  // truckItems.push({ ...truckItem, ...item });
-                  // let concatedItem = { ...truckItem, ...item };
                   res(truckItem);
 
                   // });
