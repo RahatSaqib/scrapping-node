@@ -1,18 +1,17 @@
-const express = require('express');
-const chai = require('chai');
-var server = require('supertest');
-const app = express();
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const request = require('supertest');
+const app =  require( "../app");
 var should = require("should");
 //  server = server.agent("http://localhost:8443");
-server = server(app)
 describe('Get Next Page URL', () => {
     it('should get next url', (done) => {
-        server
-        .get("/next-url")
+        request(app).get("/next-url")
         .expect("Content-type",/json/)
         .expect(200) // THis is HTTP response
         .end(function(err,res){
           // HTTP status should be 200
+          // console.log(res)
           res.status.should.equal(200);
         //   // Error key should be false.
           res.error.should.equal(false);
@@ -21,20 +20,52 @@ describe('Get Next Page URL', () => {
     });
  });
 });
-// describe('Scrape  URL', () => {
-//     it('should Scrape truck item', (done) => {
-//             server
-//             .get("/scrape-truck-item")
-//             .expect("Content-type",/json/)
-//             .expect(200) // THis is HTTP response
-//             .end(function(err,res){
-//               // HTTP status should be 200
-//               res.status.should.equal(200);
-//             //   // Error key should be false.
-//               res.error.should.equal(false);
-//               done();
-//              // more validations can be added here as required
-//         })
+describe('Get Total Ads', () => {
+  it('should get total ads', (done) => {
+      request(app).get("/total-ads")
+      .expect("Content-type",/json/)
+      .expect(200) // THis is HTTP response
+      .end(function(err,res){
+        // HTTP status should be 200
+        // console.log(res)
+        res.status.should.equal(200);
+      //   // Error key should be false.
+        res.error.should.equal(false);
+        done();
+       // more validations can be added here as required
+  });
+});
+});
+describe('Add Items', () => {
+  it('should get  url and ids', (done) => {
+      request(app).get("/add-items")
+      .expect("Content-type",/json/)
+      .expect(200) // THis is HTTP response
+      .end(function(err,res){
+        // HTTP status should be 200
+        // console.log(res)
+        res.status.should.equal(200);
+      //   // Error key should be false.
+        res.error.should.equal(false);
+        done();
+       // more validations can be added here as required
+  });
+});
+});
+describe('Scrape  URL', () => {
+    it('should Scrape truck item', (done) => {
+            request(app)
+            .get("/scrape-truck-item")
+            .expect("Content-type",/json/)
+            .expect(200) // THis is HTTP response
+            .end(function(err,res){
+              // HTTP status should be 200
+              res.status.should.equal(200);
+            //   // Error key should be false.
+              res.error.should.equal(false);
+              done();
+             // more validations can be added here as required
+        })
 
-//  });
-// });
+ });
+});
