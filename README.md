@@ -40,14 +40,14 @@ $ npm run test
 ### 4. Questions/Thoughts:
 #### 1. Ideas for error catching/solving, retry strategies?
 
-&nbsp; &nbsp; Ans: For error solving I have use  promise for rejecting any request to cache for identifying exact problem or error.If any request reject it stores the 404 NOT FOUND property on url object.
+&nbsp; &nbsp; Ans:  For error solving I have used  Promise for rejecting any request to cache for identifying the exact problem or error.If any request rejects it stores the 404 NOT FOUND property on the url object..
 
 #### 2. Accessing more ads from this link than the limit allows (max 50 pages)?
-&nbsp; &nbsp; Ans: No, I cann't access more ads because the given link or url have only 8/9 pages for scrapping.
+&nbsp; &nbsp; Ans: No, I can't access more ads because the given link or url has only 8/9 pages for scrapping.
 
 #### 3. Experience with CI/CD tools?
-&nbsp; &nbsp; Ans: Yes, It was continuous integration for this. Whenever I pushed an update on git ,it test the api's with scripted test cases.  Continous Deployment can not be happen because I did not write any scipt for any deplpyment. It is done locally.
+&nbsp; &nbsp; Ans: Yes, I experienced CI/CD tools in this project. Whenever I push an update on git , it tests the api's with scripted test cases. Continuous Deployment can not happen because I did not write any script for any deployment. It is done locally.
 
 #### 4. Experience on this task?
-&nbsp; &nbsp; Ans: It was a good ride for me. The task drive to me know further because it was very interesting for me. Love to learn new things and technology.
+&nbsp; &nbsp; Ans: It was a good ride for me. The task drove me to know further because it was very interesting for me. Love to learn new things and technology.
 ***

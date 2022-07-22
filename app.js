@@ -8,7 +8,6 @@ require("dotenv").config();
 const baseUrl = process.env.BASE_URL;
 const additionalUrl = process.env.ADDITIONAL_URL;
 const url = baseUrl + additionalUrl;
-
 const ClassAddItems = require("./classes/add-items");
 const ClassGetNextPageUrl = require("./classes/get-next-page-url");
 const ClassGetTotalAdsCount = require("./classes/get-total-ads-count");
@@ -24,6 +23,59 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 let items = [];
+let reqTime = "";
+let logger = (req, res, next) => {
+  //middleware function
+  reqTime = "";
+  let current_datetime = new Date();
+  reqTime = current_datetime;
+  let formatted_date =
+    current_datetime.getFullYear() +
+    "-" +
+    (current_datetime.getMonth() + 1) +
+    "-" +
+    current_datetime.getDate() +
+    " " +
+    current_datetime.getHours() +
+    ":" +
+    current_datetime.getMinutes() +
+    ":" +
+    current_datetime.getSeconds();
+  let url = req.url;
+  const start = process.hrtime();
+  reqTime = start;
+  let log = `requesting ${url} - [${formatted_date}] `;
+
+  console.log(log);
+  let send = res.send;
+  res.send = (result) => {
+    let resTime = process.hrtime();
+    let time = '';
+    var seconds = Math.round(
+      (resTime[0] * 1000 +
+        resTime[1] / 1000000 -
+        reqTime[0] * 1000 +
+        reqTime[1] / 1000000) /
+      1000);
+    if(seconds > 60){
+      var min = parseInt(seconds/60) 
+      var carrier_seconds = seconds % 60;
+      time = `${min}m ${carrier_seconds}s`
+    }
+    else{
+      time = `${seconds}s`
+    }
+    console.log(
+      `Find ${req.url}: ${res.statusCode} - Response Time : ${time}`
+    );
+    console.log("Response Type :", typeof result);
+    res.send = send;
+    return res.send(result);
+  };
+  next();
+};
+
+app.use(logger);
 
 //Api for get next page url
 app.get("/next-url", function (req, res) {
@@ -65,7 +117,6 @@ app.get("/scrape-truck-item", function (req, res) {
       pages.map((page) => {
         return new Promise((resolve, reject) => {
           addItems.handle(page.url).then((data) => {
-            console.log('Items Found' , truckItems.length)
             Promise.all(
               data.map((truckItem) => {
                 return new Promise((res, rejt) => {
@@ -102,11 +153,18 @@ app.get("/scrape-truck-item", function (req, res) {
             });
           });
         })
-      ).then(() => {
-        console.log(modifiedTruckItems.length);
-        res.status(200).send(modifiedTruckItems);
-      });
-    });
+      )
+        .then(() => {
+          console.log(modifiedTruckItems.length);
+          res.status(200).send(modifiedTruckItems);
+        })
+        .catch((err) => {
+          res.status(500);
+        });
+    }).catch((err)=>{
+      res.status(500);
+
+    })
   });
 });
 

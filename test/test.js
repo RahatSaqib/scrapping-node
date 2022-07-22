@@ -11,10 +11,9 @@ describe('Get Next Page URL', () => {
         .end(function(err,res){
           // HTTP status should be 200
           res.status.should.equal(200);
-        //   // Error key should be false.
+          // Error key should be false.
           res.error.should.equal(false);
           done();
-         // more validations can be added here as required
     });
  });
 });
@@ -27,10 +26,10 @@ describe('Get Total Ads', () => {
         // HTTP status should be 200
         // console.log(res)
         res.status.should.equal(200);
-      //   // Error key should be false.
+        // Error key should be false.
         res.error.should.equal(false);
         done();
-       // more validations can be added here as required
+
   });
 });
 });
@@ -43,10 +42,9 @@ describe('Add Items', () => {
         // HTTP status should be 200
         // console.log(res)
         res.status.should.equal(200);
-      //   // Error key should be false.
+        // Error key should be false.
         res.error.should.equal(false);
         done();
-       // more validations can be added here as required
   });
 });
 });
@@ -59,10 +57,9 @@ describe('Scrape  URL', () => {
             .end(function(err,res){
               // HTTP status should be 200
               res.status.should.equal(200);
-            //   // Error key should be false.
+              // Error key should be false.
               res.error.should.equal(false);
               done();
-             // more validations can be added here as required
         })
 
  });
