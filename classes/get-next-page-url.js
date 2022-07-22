@@ -24,7 +24,6 @@ module.exports = class ClassGetNextPageUrl {
   
           //check statement if the attribute(data-testid) value is "pagination-list-item"
           if ($(parentElement).attr("data-testid") === "pagination-list-item") {
-            // let str = $(parentElement).find("a").attr("href");
             totalPages = $(parentElement).find("a").text();
           }
         });
@@ -40,7 +39,6 @@ module.exports = class ClassGetNextPageUrl {
           pages.push(pageItem);
           idx++;
         }
-        // console.log(pages);
         resolve(pages);
       });
     } catch (err) {

@@ -65,6 +65,7 @@ app.get("/scrape-truck-item", function (req, res) {
       pages.map((page) => {
         return new Promise((resolve, reject) => {
           addItems.handle(page.url).then((data) => {
+            console.log('Items Found' , truckItems.length)
             Promise.all(
               data.map((truckItem) => {
                 return new Promise((res, rejt) => {
@@ -90,10 +91,11 @@ app.get("/scrape-truck-item", function (req, res) {
         truckItems.map((truckItem) => {
           return new Promise((resolve, reject) => {
             scrapeTruckItem.handle(truckItem.url).then((item) => {
-              if (!uniqueItems.includes(truckItem.id)) {
-                modifiedTruckItems.push({ ...truckItem, ...item });
-                uniqueItems.push(truckItem.id);
-              }
+              // if (!uniqueItems.includes(item.id)) {
+              //   modifiedTruckItems.push({ ...truckItem, ...item });
+              //   uniqueItems.push(item.id);
+              // }
+              modifiedTruckItems.push({ ...truckItem, ...item });
 
               let concatedItem = { ...truckItem, ...item };
               resolve(concatedItem);

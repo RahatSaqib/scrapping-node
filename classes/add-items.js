@@ -43,6 +43,6 @@ module.exports = class ClassAddItems {
   handle(e) {
     let url = e;
 
-    return this.handleItems(url);
+    return this.addItems(url);
   }
 };
