@@ -22,11 +22,12 @@ $ npm install
 ```
 $ npm run start 
 ```
-The api's url you will ned to fetch data.
+The api's url you will need to scrape data.
 
+Url for scrape all the pages of initial url.
 1. scrapTruckItem:  url : http://localhost:8443/scrape-truck-item , method : GET
 
-If you want to individual function scrapping 
+If you want to individual function scrapping.
 1. getNextPageUrl:  url : http://localhost:8443/next-url , method : GET
 2. addItems:  url : http://localhost:8443/add-items , method : GET
 3. getTotalAdsCount:  url : http://localhost:8443/total-ads , method : GET
