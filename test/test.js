@@ -4,7 +4,7 @@ const request = require('supertest');
 const app =  require( "../app");
 var should = require("should");
 let params ={
-  url :"https://www.otomoto.pl/ciezarowe/mercedes-benz?search%5Bfilter_enum_damaged%5D=0&search%5Border%5D=created_at+%3Adesc"
+  url :"https://www.otomoto.pl/ciezarowe/uzytkowe/mercedes-benz/od-+2014/q-actros?search%5Bfilter_enum_damaged%5D=0&search%5Border%5D=created_at+%3Adesc"
 }
 describe('Get Next Page URL', () => {
     it('should get next url', (done) => {
