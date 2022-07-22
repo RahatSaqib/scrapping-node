@@ -46,7 +46,7 @@ $ npm run test
 &nbsp; &nbsp; Ans: No, I cann't access more ads because the given link or url have only 8/9 pages for scrapping.
 
 #### 3. Experience with CI/CD tools?
-&nbsp; &nbsp; Ans: Yes, It was continuous integration for this. Whenever I pushed an update on git ,it test the api's with scripted test cases.  Continous Deployment can not be happen because I have not write any deploy scipt for any server. It was done locally.
+&nbsp; &nbsp; Ans: Yes, It was continuous integration for this. Whenever I pushed an update on git ,it test the api's with scripted test cases.  Continous Deployment can not be happen because I did not write any scipt for any deplpyment. It is done locally.
 
 #### 4. Experience on this task?
 &nbsp; &nbsp; Ans: It was a good ride for me. The task drive to me know further because it was very interesting for me. Love to learn new things and technology.
