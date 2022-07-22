@@ -24,10 +24,15 @@ $ npm run start
 ```
 The api's JSON body that you will need to scrape data.
 Example: 
+
+
 {
   url :"https://www.otomoto.pl/ciezarowe/uzytkowe/mercedes-benz/od-+2014/q-actros?search%5Bfilter_enum_damaged%5D=0&search%5Border%5D=created_at+%3Adesc"
 }
-You can use other url of 1st page on that list from otomoto website also.
+
+
+You can use  1st page url of any other item list for scarpe all the existing pages from otomoto website.
+
 Url for scrape all the pages of initial url or your desired url .
 1. scrapTruckItem:  url : http://localhost:8443/scrape-truck-item , method : POST
 
