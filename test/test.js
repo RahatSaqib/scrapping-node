@@ -3,9 +3,13 @@ const bodyParser = require("body-parser");
 const request = require('supertest');
 const app =  require( "../app");
 var should = require("should");
+let params ={
+  url :"https://www.otomoto.pl/ciezarowe/uzytkowe/mercedes-benz/od-+2014/q-actros?search%5Bfilter_enum_damaged%5D=0&search%5Border%5D=created_at+%3Adesc"
+}
 describe('Get Next Page URL', () => {
     it('should get next url', (done) => {
-        request(app).get("/next-url")
+        request(app).post("/next-url")
+        .send(params)
         .expect("Content-type",/json/)
         .expect(200) // THis is HTTP response
         .end(function(err,res){
@@ -19,7 +23,8 @@ describe('Get Next Page URL', () => {
 });
 describe('Get Total Ads', () => {
   it('should get total ads', (done) => {
-      request(app).get("/total-ads")
+      request(app).post("/total-ads")
+      .send(params)
       .expect("Content-type",/json/)
       .expect(200) // THis is HTTP response
       .end(function(err,res){
@@ -35,7 +40,8 @@ describe('Get Total Ads', () => {
 });
 describe('Add Items', () => {
   it('should get  url and ids', (done) => {
-      request(app).get("/add-items")
+      request(app).post("/add-items")
+      .send(params)
       .expect("Content-type",/json/)
       .expect(200) // THis is HTTP response
       .end(function(err,res){
@@ -51,7 +57,8 @@ describe('Add Items', () => {
 describe('Scrape  URL', () => {
     it('should Scrape truck item', (done) => {
             request(app)
-            .get("/scrape-truck-item")
+            .post("/scrape-truck-item")
+            .send(params)
             .expect("Content-type",/json/)
             .expect(200) // THis is HTTP response
             .end(function(err,res){

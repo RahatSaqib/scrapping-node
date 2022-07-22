@@ -78,7 +78,8 @@ let logger = (req, res, next) => {
 app.use(logger);
 
 //Api for get next page url
-app.get("/next-url", function (req, res) {
+app.post("/next-url", function (req, res) {
+  let url = req.body.url
   getNextPageUrl.handle(url).then((pages) => {
     res.status(200).send(pages);
 
@@ -94,7 +95,8 @@ app.get("/next-url", function (req, res) {
 });
 
 //Api for add items id and url
-app.get("/add-items", function (req, res) {
+app.post("/add-items", function (req, res) {
+  let url = req.body.url
   addItems.handle(url).then((items) => {
     // console.log(items);
     res.status(200).send(items);
@@ -102,14 +104,16 @@ app.get("/add-items", function (req, res) {
 });
 
 //Api for get-total-ads
-app.get("/total-ads", function (req, res) {
+app.post("/total-ads", function (req, res) {
+  let url = req.body.url
   getTotalAdsCount.handle(url).then((totalAds) => {
     res.status(200).send(totalAds);
   });
 });
 
 //Api for scrap-truck-item
-app.get("/scrape-truck-item", function (req, res) {
+app.post("/scrape-truck-item", function (req, res) {
+  let url = req.body.url
   getNextPageUrl.handle(url).then((pages) => {
     let truckItems = [];
     let uniqueItems = [];
