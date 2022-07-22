@@ -47,7 +47,7 @@ $ npm run test
 &nbsp; &nbsp; Ans:  For error solving I have used  Promise for rejecting any request to cache for identifying the exact problem or error.If any request rejects it stores the 404 NOT FOUND property on the url object..
 
 #### 2. Accessing more ads from this link than the limit allows (max 50 pages)?
-&nbsp; &nbsp; Ans: No, I can't access more ads because the given link or url has only 8/9 pages for scrapping. But where rather than this given url , I have tried the mercedez car section where there hav 59 pages of items. I can scrape it but it takes to much response time.
+&nbsp; &nbsp; Ans: No, I can't access more ads because the given link or url has only 8/9 pages for scrapping. But rather than this given url , I have tried the Mercedes car section where there are 59 pages of items. I can scrape it but it takes too much response time.
 
 #### 3. Experience with CI/CD tools?
 &nbsp; &nbsp; Ans: Yes, I experienced CI/CD tools in this project. Whenever I push an update on git , it tests the api's with scripted test cases. Continuous Deployment can not happen because I did not write any script for any deployment. It is done locally.
