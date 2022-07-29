@@ -49,7 +49,7 @@ $ npm run test
 ### 4. Questions/Thoughts:
 #### 1. Ideas for error catching/solving, retry strategies?
 
-&nbsp; &nbsp; Ans:  For error solving I have used  Promise for rejecting any request to cache for identifying the exact problem or error.If any request rejects it stores the 404 NOT FOUND property on the url object..
+&nbsp; &nbsp; Ans:  For error solving I have used  Promise for rejecting any request to cache for identifying the exact problem or error.If any request rejects it stores the 404 NOT FOUND property on the url object. AND added retry strategies for scraping url for 3 times.
 
 #### 2. Accessing more ads from this link than the limit allows (max 50 pages)?
 &nbsp; &nbsp; Ans: No, I can't access more ads because the given link or url has only 8/9 pages for scrapping. But rather than this given url , I have tried the Mercedes car section where there are 59 pages of items. I can scrape it but it takes too much response time.
