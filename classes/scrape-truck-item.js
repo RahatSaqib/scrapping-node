@@ -70,7 +70,6 @@ module.exports = class ClassScrapeTruckItem {
             resolve(this.truckItems);
           });
         } catch (err) {
-          console.log('error' , retries)
           retries++;
         }
       }
